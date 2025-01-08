@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.init;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.exception.DataMappingExceptoin;
 import mate.academy.rickandmorty.exception.HttpClientException;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.model.Episode;
@@ -39,15 +41,20 @@ public class DbInitialization {
     public void loadAndSaveCharacters() {
         String api = environment.getProperty("rickandmorty.api");
 
-        locationService.saveAll(fetchData(
-                api + environment.getProperty("rickandmorty.api.location"), Location.class));
-        episodeService.saveAll(fetchData(
-                api + environment.getProperty("rickandmorty.api.episode"), Episode.class));
-        characterService.saveAll(fetchData(
-                api + environment.getProperty("rickandmorty.api.character"), Character.class));
+        List<Location> locations = mapData(fetchData(
+                api + environment.getProperty("rickandmorty.api.location")), Location.class);
+        locations = locationService.saveAll(locations);
+
+        List<Episode> episodes = mapData(fetchData(
+                api + environment.getProperty("rickandmorty.api.episode")), Episode.class);
+        episodes = episodeService.saveAll(episodes);
+
+        List<Character> characters = mapData(fetchData(
+                api + environment.getProperty("rickandmorty.api.character")), Character.class);
+        characters = characterService.saveAll(characters);
     }
 
-    private <T> List<T> fetchData(String uri, Class<T> clazz) {
+    private String fetchData(String uri) {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -56,12 +63,23 @@ public class DbInitialization {
                     .build();
             HttpResponse<String> response = httpClient.send(
                     httpRequest, HttpResponse.BodyHandlers.ofString());
+
             JsonNode jsonNode = objectMapper.readTree(response.body());
-            return objectMapper.readValue(
-                    jsonNode.get("results").toString(),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
+
+            return jsonNode.get("results").toString();
+
         } catch (IOException | InterruptedException ex) {
             throw new HttpClientException("Can't fetch data by URI: " + uri, ex);
+        }
+    }
+
+    private <T> List<T> mapData(String string, Class<T> clazz) {
+        try {
+            return objectMapper.readValue(
+                    string,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
+        } catch (JsonProcessingException ex) {
+            throw new DataMappingExceptoin("Can't convert data to object", ex);
         }
     }
 }
