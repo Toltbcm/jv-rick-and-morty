@@ -1,7 +1,5 @@
 package mate.academy.rickandmorty.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,13 +24,11 @@ import mate.academy.rickandmorty.model.enums.Status;
 @Table(name = "characters")
 public class Character {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @JsonProperty(value = "id")
     @Column(name = "external_id")
     private Long externalId;
 
@@ -53,7 +49,6 @@ public class Character {
     @Column(name = "gender")
     private Gender gender;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "origin_location_id")
     private Location origin;
@@ -65,7 +60,6 @@ public class Character {
     @Column(name = "image")
     private String image;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "character_episode",

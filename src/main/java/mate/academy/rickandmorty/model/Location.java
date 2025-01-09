@@ -1,7 +1,5 @@
 package mate.academy.rickandmorty.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,13 +17,11 @@ import lombok.Data;
 @Table(name = "locations")
 public class Location {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @JsonProperty(value = "id")
     @Column(name = "external_id")
     private Long externalId;
 
@@ -38,7 +34,6 @@ public class Location {
     @Column(name = "dimension")
     private String dimension;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "location")
     private List<Character> residents = new ArrayList<>();
 
