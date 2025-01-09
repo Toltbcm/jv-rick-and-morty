@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DbInitialization {
+public class DatabaseInitialization {
 
     private final ExternalClientService externalClientService;
 

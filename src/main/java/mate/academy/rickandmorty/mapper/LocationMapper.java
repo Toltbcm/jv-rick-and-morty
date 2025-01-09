@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapperConfig.class, uses = {MapperUtil.class})
 public interface LocationMapper {
 
+    @Mapping(target = "residents", ignore = true)
     @Mapping(source = "id", target = "externalId")
     @Mapping(source = "created", target = "created", qualifiedByName = "stringToDateTime")
     Location toModel(LocationResultsDto locationResultsDto);

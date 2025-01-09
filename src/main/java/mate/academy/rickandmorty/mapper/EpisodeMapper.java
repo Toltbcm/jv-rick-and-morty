@@ -11,6 +11,7 @@ public interface EpisodeMapper {
 
     String DATE_FORMAT = "MMMM d, yyyy";
 
+    @Mapping(target = "characters", ignore = true)
     @Mapping(source = "id", target = "externalId")
     @Mapping(source = "airDate", target = "airDate", dateFormat = DATE_FORMAT)
     @Mapping(source = "created", target = "created", qualifiedByName = "stringToDateTime")
