@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -40,7 +41,7 @@ public class Episode {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "episodes")
-    private List<Character> characters;
+    private List<Character> characters = new ArrayList<>();
 
     @Column(name = "url")
     private String url;

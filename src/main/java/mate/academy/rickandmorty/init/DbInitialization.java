@@ -1,6 +1,5 @@
 package mate.academy.rickandmorty.init;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -8,12 +7,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.exception.DataMappingExceptoin;
 import mate.academy.rickandmorty.exception.HttpClientException;
-import mate.academy.rickandmorty.model.Character;
-import mate.academy.rickandmorty.model.Episode;
+import mate.academy.rickandmorty.mapper.object.CharacterObjectMapper;
+import mate.academy.rickandmorty.mapper.object.SimpleObjectMapper;
 import mate.academy.rickandmorty.model.Location;
 import mate.academy.rickandmorty.service.CharacterService;
 import mate.academy.rickandmorty.service.EpisodeService;
@@ -31,6 +30,10 @@ public class DbInitialization {
 
     private final ObjectMapper objectMapper;
 
+    private final SimpleObjectMapper simpleObjectMapper;
+
+    private final CharacterObjectMapper characterObjectMapper;
+
     private final LocationService locationService;
 
     private final EpisodeService episodeService;
@@ -39,47 +42,40 @@ public class DbInitialization {
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadAndSaveCharacters() {
-        String api = environment.getProperty("rickandmorty.api");
-
-        List<Location> locations = mapData(fetchData(
-                api + environment.getProperty("rickandmorty.api.location")), Location.class);
+        List<Location> locations = getSimpleData(environment.getProperty("rickandmorty.api.location"), Location.class);
         locations = locationService.saveAll(locations);
 
-        List<Episode> episodes = mapData(fetchData(
-                api + environment.getProperty("rickandmorty.api.episode")), Episode.class);
-        episodes = episodeService.saveAll(episodes);
-
-        List<Character> characters = mapData(fetchData(
-                api + environment.getProperty("rickandmorty.api.character")), Character.class);
-        characters = characterService.saveAll(characters);
+//        List<Episode> episodes = simpleObjectMapper.mapSimpleData(fetchData(
+//                api + environment.getProperty("rickandmorty.api.episode")), Episode.class);
+//        episodes = episodeService.saveAll(episodes);
+//
+//        List<Character> characters = characterObjectMapper.mapCharacters(
+//                fetchData(api + environment.getProperty("rickandmorty.api.character")),
+//                locations);
+//        characterService.saveAll(characters);
     }
 
-    private String fetchData(String uri) {
-        try {
-            HttpClient httpClient = HttpClient.newHttpClient();
+    private <T> List<T> getSimpleData(String uri, Class<T> clazz) {
+        List<T> result = new ArrayList<>();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        do {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(uri))
                     .build();
-            HttpResponse<String> response = httpClient.send(
-                    httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            JsonNode jsonNode = objectMapper.readTree(response.body());
-
-            return jsonNode.get("results").toString();
-
-        } catch (IOException | InterruptedException ex) {
-            throw new HttpClientException("Can't fetch data by URI: " + uri, ex);
+            try {
+                HttpResponse<String> response = httpClient.send(
+                        httpRequest, HttpResponse.BodyHandlers.ofString());
+                JsonNode jsonNode = objectMapper.readTree(response.body());
+                String data = jsonNode.get("results").toString();
+                result.addAll(simpleObjectMapper.mapSimpleData(data, clazz));
+                uri = jsonNode.get("info").get("next").asText();
+            } catch (IOException | InterruptedException ex) {
+                throw new HttpClientException("Can't fetch data by URI: " + uri, ex);
+            }
         }
-    }
+        while (!uri.equals("null"));
 
-    private <T> List<T> mapData(String string, Class<T> clazz) {
-        try {
-            return objectMapper.readValue(
-                    string,
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
-        } catch (JsonProcessingException ex) {
-            throw new DataMappingExceptoin("Can't convert data to object", ex);
-        }
+        return null;
     }
 }

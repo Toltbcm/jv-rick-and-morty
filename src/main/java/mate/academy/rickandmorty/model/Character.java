@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import mate.academy.rickandmorty.model.enums.Gender;
@@ -52,21 +53,18 @@ public class Character {
     @Column(name = "gender")
     private Gender gender;
 
-    // TODO
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "origin_location_id")
     private Location origin;
 
-    // TODO
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "last_location_id")
     private Location location;
 
+    @Column(name = "image")
     private String image;
 
-    // TODO
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -74,7 +72,7 @@ public class Character {
             joinColumns = @JoinColumn(name = "character_id"),
             inverseJoinColumns = @JoinColumn(name = "episode_id")
     )
-    private List<Episode> episodes;
+    private List<Episode> episodes = new ArrayList<>();
 
     @Column(name = "url")
     private String url;

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -39,7 +40,7 @@ public class Location {
 
     @JsonIgnore
     @OneToMany(mappedBy = "location")
-    private List<Character> residents;
+    private List<Character> residents = new ArrayList<>();
 
     @Column(name = "url")
     private String url;
