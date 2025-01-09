@@ -6,7 +6,7 @@ import mate.academy.rickandmorty.model.Location;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapperConfig.class, uses = {CharacterMapper.class})
+@Mapper(config = MapperConfig.class, uses = {MapperUtil.class})
 public interface LocationMapper {
 
     @Mapping(source = "id", target = "externalId")

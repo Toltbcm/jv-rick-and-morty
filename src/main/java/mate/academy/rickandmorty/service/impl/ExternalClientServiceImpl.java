@@ -28,8 +28,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExternalClientServiceImpl implements ExternalClientService {
 
-    private final Environment environment;
     private final ObjectMapper objectMapper;
+    private final Environment environment;
     private final LocationService locationService;
     private final LocationMapper locationMapper;
     private final EpisodeService episodeService;
@@ -53,7 +53,6 @@ public class ExternalClientServiceImpl implements ExternalClientService {
                 CharacterResultsDto.class);
         characterService.saveAll(characterDtos.stream().map(characterMapper::toModel).toList());
     }
-
 
     private <T> List<T> getAll(String uri, Class<T> clazz) {
         List<T> result = new ArrayList<>();

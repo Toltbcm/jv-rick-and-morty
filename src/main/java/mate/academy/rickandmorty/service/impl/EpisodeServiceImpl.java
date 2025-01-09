@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.model.Episode;
@@ -18,5 +19,11 @@ public class EpisodeServiceImpl implements EpisodeService {
     @Override
     public List<Episode> saveAll(List<Episode> episodes) {
         return episodeRepository.saveAll(episodes);
+    }
+
+    @Override
+    public Episode getByExternalId(Long id) {
+        return episodeRepository.getByExternalId(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find episode by external ID: " + id));
     }
 }

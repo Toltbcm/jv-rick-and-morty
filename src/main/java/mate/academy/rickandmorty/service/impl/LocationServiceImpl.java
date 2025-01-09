@@ -1,5 +1,6 @@
 package mate.academy.rickandmorty.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.model.Location;
@@ -18,5 +19,11 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<Location> saveAll(List<Location> locations) {
         return locationRepository.saveAll(locations);
+    }
+
+    @Override
+    public Location getByExternalId(Long id) {
+        return locationRepository.getByExternalId(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find location by external ID: " + id));
     }
 }
