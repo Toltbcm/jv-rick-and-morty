@@ -1,6 +1,7 @@
 package mate.academy.rickandmorty.mapper;
 
 import mate.academy.rickandmorty.config.MapperConfig;
+import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.dto.external.CharacterResultsDto;
 import mate.academy.rickandmorty.model.Character;
 import org.mapstruct.Mapper;
@@ -17,4 +18,6 @@ public interface CharacterMapper {
     @Mapping(source = "episodes", target = "episodes", qualifiedByName = "stringsToEpisodes")
     @Mapping(source = "created", target = "created", qualifiedByName = "stringToDateTime")
     Character toModel(CharacterResultsDto characterResultsDto);
+
+    CharacterResponseDto toDto(Character character);
 }
