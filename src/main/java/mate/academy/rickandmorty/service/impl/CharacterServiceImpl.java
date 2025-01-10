@@ -2,6 +2,8 @@ package mate.academy.rickandmorty.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.CharacterResponseDto;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
@@ -34,5 +36,16 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findByNameContaining(namePart).stream()
                 .map(characterMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public CharacterResponseDto getRandom() {
+        Long maxId = characterRepository.findMaxId();
+        Optional<Character> characterOptional;
+        do {
+            characterOptional = characterRepository.findById(
+                    ThreadLocalRandom.current().nextLong(maxId + 1));
+        } while (characterOptional.isEmpty());
+        return characterMapper.toDto(characterOptional.get());
     }
 }

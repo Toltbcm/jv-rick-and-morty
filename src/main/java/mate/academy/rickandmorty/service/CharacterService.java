@@ -11,4 +11,6 @@ public interface CharacterService {
     CharacterResponseDto getById(Long id);
 
     List<CharacterResponseDto> getByNamePart(String namePart);
+
+    CharacterResponseDto getRandom();
 }

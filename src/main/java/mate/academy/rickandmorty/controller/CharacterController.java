@@ -26,6 +26,12 @@ public class CharacterController {
         return characterService.getById(id);
     }
 
+    @Operation(summary = "Get character by ID", description = "Get character by ID")
+    @GetMapping("/random")
+    public CharacterResponseDto getRandom() {
+        return characterService.getRandom();
+    }
+
     @Operation(summary = "Get characters by name part", description = "Get character by name part")
     @GetMapping
     public List<CharacterResponseDto> getById(@RequestParam String namePart) {
