@@ -1,8 +1,8 @@
 package mate.academy.rickandmorty.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.model.Location;
 import mate.academy.rickandmorty.repository.LocationRepository;
 import mate.academy.rickandmorty.service.LocationService;
