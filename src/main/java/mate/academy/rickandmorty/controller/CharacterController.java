@@ -32,7 +32,7 @@ public class CharacterController {
         return characterService.getRandom();
     }
 
-    @Operation(summary = "Characters by name part", description = "Get character by name part")
+    @Operation(summary = "Characters by name part", description = "Get characters by name part")
     @GetMapping("/search")
     public List<CharacterResponseDto> getByNamePart(@RequestParam String namePart) {
         return characterService.getByNamePart(namePart);
