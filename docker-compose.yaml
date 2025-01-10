@@ -1,16 +1,16 @@
 services:
   mysql:
     image: mysql:9.1.0
-    container_name: mysql_9_1_0
+    container_name: mysql
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - store_data:/var/lib/mysql
+      - data_storage:/var/lib/mysql
     ports:
       - "3310:3306"
 
 volumes:
-  store_data:
+  data_storage:
