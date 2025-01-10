@@ -45,19 +45,20 @@ public class MapperUtil {
         if (locationSubDto.url().isBlank()) {
             return null;
         }
-        String[] splittedUrl = locationSubDto.url().split("/");
-        Long externalId = Long.valueOf(splittedUrl[splittedUrl.length - 1]);
-        return locationService.getByExternalId(externalId);
+        return locationService.getByExternalId(getIdFromUrl(locationSubDto.url()));
     }
 
     @Named("stringsToEpisodes")
     public List<Episode> parseEpisodes(List<String> urls) {
         List<Episode> episodes = new ArrayList<>();
         for (String url : urls) {
-            String[] splittedUrl = url.split("/");
-            Long externalId = Long.valueOf(splittedUrl[splittedUrl.length - 1]);
-            episodes.add(episodeService.getByExternalId(externalId));
+            episodes.add(episodeService.getByExternalId(getIdFromUrl(url)));
         }
         return episodes;
+    }
+
+    private Long getIdFromUrl(String url) {
+        String[] splittedUrl = url.split("/");
+        return Long.valueOf(splittedUrl[splittedUrl.length - 1]);
     }
 }
