@@ -41,10 +41,11 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public CharacterResponseDto getRandom() {
         Long maxId = characterRepository.findMaxId();
+        Long minId = characterRepository.findMinId();
         Optional<Character> characterOptional;
         do {
             characterOptional = characterRepository.findById(
-                    ThreadLocalRandom.current().nextLong(maxId + 1));
+                    ThreadLocalRandom.current().nextLong(maxId - minId + 1) + minId);
         } while (characterOptional.isEmpty());
         return characterMapper.toDto(characterOptional.get());
     }

@@ -13,4 +13,7 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
 
     @Query("SELECT MAX(id) FROM Character")
     Long findMaxId();
+
+    @Query("SELECT MIN(id) FROM Character")
+    Long findMinId();
 }
