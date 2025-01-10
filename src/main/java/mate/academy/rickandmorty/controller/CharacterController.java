@@ -33,8 +33,8 @@ public class CharacterController {
     }
 
     @Operation(summary = "Get characters by name part", description = "Get character by name part")
-    @GetMapping
-    public List<CharacterResponseDto> getById(@RequestParam String namePart) {
+    @GetMapping("/search")
+    public List<CharacterResponseDto> getByNamePart(@RequestParam String namePart) {
         return characterService.getByNamePart(namePart);
     }
 }
