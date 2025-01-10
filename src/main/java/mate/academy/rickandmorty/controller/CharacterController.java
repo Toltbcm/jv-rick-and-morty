@@ -20,19 +20,19 @@ public class CharacterController {
 
     private final CharacterService characterService;
 
-    @Operation(summary = "Get character by ID", description = "Get character by ID")
+    @Operation(summary = "Character by ID", description = "Get character by ID")
     @GetMapping("/{id}")
     public CharacterResponseDto getById(@PathVariable Long id) {
         return characterService.getById(id);
     }
 
-    @Operation(summary = "Get character by ID", description = "Get character by ID")
+    @Operation(summary = "Random character", description = "Get random character")
     @GetMapping("/random")
     public CharacterResponseDto getRandom() {
         return characterService.getRandom();
     }
 
-    @Operation(summary = "Get characters by name part", description = "Get character by name part")
+    @Operation(summary = "Characters by name part", description = "Get character by name part")
     @GetMapping("/search")
     public List<CharacterResponseDto> getByNamePart(@RequestParam String namePart) {
         return characterService.getByNamePart(namePart);
