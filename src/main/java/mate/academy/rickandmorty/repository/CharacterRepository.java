@@ -11,9 +11,6 @@ public interface CharacterRepository extends JpaRepository<Character, Long> {
 
     List<Character> findByNameContaining(String namePart);
 
-    @Query("SELECT MAX(id) FROM Character")
-    Long findMaxId();
-
-    @Query("SELECT MIN(id) FROM Character")
-    Long findMinId();
+    @Query(value = "FROM Character ORDER BY RAND() LIMIT 1")
+    Character getRandom();
 }
