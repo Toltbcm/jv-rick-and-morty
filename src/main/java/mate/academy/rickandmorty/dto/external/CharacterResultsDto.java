@@ -2,14 +2,16 @@ package mate.academy.rickandmorty.dto.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import mate.academy.rickandmorty.model.enums.Gender;
+import mate.academy.rickandmorty.model.enums.Status;
 
 public record CharacterResultsDto(
         Long id,
         String name,
-        String status,
+        Status status,
         String species,
         String type,
-        String gender,
+        Gender gender,
         LocationSubDto origin,
         LocationSubDto location,
         String image,

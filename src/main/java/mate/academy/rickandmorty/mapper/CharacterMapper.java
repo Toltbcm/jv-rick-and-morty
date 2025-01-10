@@ -11,8 +11,6 @@ import org.mapstruct.Mapping;
 public interface CharacterMapper {
 
     @Mapping(source = "id", target = "externalId")
-    @Mapping(source = "status", target = "status", qualifiedByName = "stringToStatus")
-    @Mapping(source = "gender", target = "gender", qualifiedByName = "stringToGender")
     @Mapping(source = "origin", target = "origin", qualifiedByName = "subDtoToLocation")
     @Mapping(source = "location", target = "location", qualifiedByName = "subDtoToLocation")
     @Mapping(source = "episodes", target = "episodes", qualifiedByName = "stringsToEpisodes")

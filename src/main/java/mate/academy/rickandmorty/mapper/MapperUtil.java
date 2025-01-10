@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.LocationSubDto;
 import mate.academy.rickandmorty.model.Episode;
 import mate.academy.rickandmorty.model.Location;
-import mate.academy.rickandmorty.model.enums.Gender;
-import mate.academy.rickandmorty.model.enums.Status;
 import mate.academy.rickandmorty.service.EpisodeService;
 import mate.academy.rickandmorty.service.LocationService;
 import org.mapstruct.Named;
@@ -28,16 +26,6 @@ public class MapperUtil {
     @Named("stringToDateTime")
     public LocalDateTime parseDateTime(String dateTime) {
         return ZonedDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME).toLocalDateTime();
-    }
-
-    @Named("stringToStatus")
-    public Status parseStatus(String status) {
-        return Status.getByValue(status);
-    }
-
-    @Named("stringToGender")
-    public Gender parseGender(String gender) {
-        return Gender.getByValue(gender);
     }
 
     @Named("subDtoToLocation")
