@@ -39,7 +39,6 @@ public class ExternalClientServiceImpl implements ExternalClientService {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-
     public void getAndSaveAll() {
         List<LocationResultsDto> locationDtos = getAll(
                 environment.getProperty("rickandmorty.api.location"),

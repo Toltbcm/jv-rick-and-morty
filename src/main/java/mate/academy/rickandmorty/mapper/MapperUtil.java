@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapperUtil {
 
+    public static final String DATE_FORMAT = "MMMM d, yyyy";
+
     private final LocationService locationService;
     private final EpisodeService episodeService;
 
