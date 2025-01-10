@@ -13,7 +13,7 @@ import mate.academy.rickandmorty.dto.external.CharacterResultsDto;
 import mate.academy.rickandmorty.dto.external.EpisodeResultsDto;
 import mate.academy.rickandmorty.dto.external.LocationResultsDto;
 import mate.academy.rickandmorty.dto.external.PageDto;
-import mate.academy.rickandmorty.exception.HttpClientException;
+import mate.academy.rickandmorty.exception.DataProcessingException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.mapper.EpisodeMapper;
 import mate.academy.rickandmorty.mapper.LocationMapper;
@@ -36,6 +36,9 @@ public class ExternalClientServiceImpl implements ExternalClientService {
     private final EpisodeMapper episodeMapper;
     private final CharacterService characterService;
     private final CharacterMapper characterMapper;
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
 
     public void getAndSaveAll() {
         List<LocationResultsDto> locationDtos = getAll(
@@ -66,7 +69,6 @@ public class ExternalClientServiceImpl implements ExternalClientService {
     }
 
     private <T> PageDto<T> fetchPageDto(String uri, Class<T> clazz) {
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(uri))
@@ -74,11 +76,13 @@ public class ExternalClientServiceImpl implements ExternalClientService {
         try {
             HttpResponse<String> response = httpClient.send(
                     httpRequest, HttpResponse.BodyHandlers.ofString());
-
             return objectMapper.readValue(response.body(),
                     objectMapper.getTypeFactory().constructParametricType(PageDto.class, clazz));
-        } catch (IOException | InterruptedException ex) {
-            throw new HttpClientException("Can't fetch data by URI: " + uri, ex);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            throw new DataProcessingException("Can't fetch data by URI: " + uri, ex);
+        } catch (IOException ex) {
+            throw new DataProcessingException("Can't fetch data by URI: " + uri, ex);
         }
     }
 }
