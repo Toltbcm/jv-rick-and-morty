@@ -28,24 +28,24 @@ public class Character {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "external_id")
+    @Column(name = "external_id", nullable = false)
     private Long externalId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private Status status;
 
-    @Column(name = "species")
+    @Column(name = "species", nullable = false)
     private String species;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @ManyToOne
@@ -56,7 +56,7 @@ public class Character {
     @JoinColumn(name = "last_location_id")
     private Location location;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false)
     private String image;
 
     @ManyToMany
@@ -67,9 +67,9 @@ public class Character {
     )
     private List<Episode> episodes;
 
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }

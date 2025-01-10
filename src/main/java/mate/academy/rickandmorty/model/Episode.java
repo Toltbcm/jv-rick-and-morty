@@ -23,24 +23,24 @@ public class Episode {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "external_id")
+    @Column(name = "external_id", nullable = false)
     private Long externalId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "air_date")
+    @Column(name = "air_date", nullable = false)
     private LocalDate airDate;
 
-    @Column(name = "episode")
+    @Column(name = "episode", nullable = false)
     private String episode;
 
     @ManyToMany(mappedBy = "episodes")
     private List<Character> characters = new ArrayList<>();
 
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }

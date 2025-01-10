@@ -22,24 +22,24 @@ public class Location {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "external_id")
+    @Column(name = "external_id", nullable = false)
     private Long externalId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "dimension")
+    @Column(name = "dimension", nullable = false)
     private String dimension;
 
     @OneToMany(mappedBy = "location")
     private List<Character> residents = new ArrayList<>();
 
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
 
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }
